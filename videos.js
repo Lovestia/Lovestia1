@@ -1,0 +1,4 @@
+const VIDEOS = [
+    ".jpg",
+   
+];

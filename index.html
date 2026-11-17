@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#020004">
+<title>💖 Lovestia 💖</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Dancing+Script:wght@600;700&family=Manrope:wght@500;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --pink: #ff2d78;
+  --pink-soft: #ff7ab0;
+  --text: #f4e9f0;
+  --mono: "Courier New", Consolas, monospace;
+  --sans: "Manrope", "Montserrat", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --script: "Dancing Script", "Segoe Script", "Snell Roundhand", "Apple Chancery", "Brush Script MT", cursive;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  width: 100%; height: 100%; overflow: hidden; background: #020004;
+  font-family: var(--sans); color: var(--text);
+  user-select: none; -webkit-user-select: none;
+}
+body { background: radial-gradient(ellipse at 50% 50%, #0e0212 0%, #060009 55%, #020004 100%); }
+button { font-family: inherit; }
+
+/* ================= Приветствие ================= */
+#welcome-screen {
+  position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center; padding: 20px;
+  background: radial-gradient(ellipse at 50% 50%, #1a0618 0%, #07010c 60%, #020004 100%);
+  transition: opacity .9s ease;
+}
+#welcome-screen::before, #welcome-screen::after {
+  content: ""; position: absolute; width: 60vmax; height: 60vmax; border-radius: 50%; filter: blur(70px); opacity: .35; pointer-events: none;
+}
+#welcome-screen::before { background: #ff2d78; left: -25vmax; top: -25vmax; animation: drift 14s ease-in-out infinite alternate; }
+#welcome-screen::after { background: #7a2cff; right: -28vmax; bottom: -28vmax; animation: drift 17s ease-in-out infinite alternate-reverse; }
+@keyframes drift { to { transform: translate(8vmax, 6vmax) scale(1.15); } }
+.boot-card {
+  position: relative; z-index: 1; width: min(380px, 100%); padding: 34px 26px 28px; text-align: center;
+  background: rgba(30, 6, 36, .6); border: 1px solid rgba(255, 45, 120, .35); border-radius: 8px;
+  box-shadow: 0 0 60px rgba(255, 45, 120, .2), inset 0 0 40px rgba(255, 45, 120, .06); backdrop-filter: blur(8px);
+}
+.boot-card i { position: absolute; width: 12px; height: 12px; border: 1px solid var(--pink); }
+.boot-card i:nth-child(1) { top: -1px; left: -1px; border-right: 0; border-bottom: 0; }
+.boot-card i:nth-child(2) { top: -1px; right: -1px; border-left: 0; border-bottom: 0; }
+.boot-card i:nth-child(3) { bottom: -1px; left: -1px; border-right: 0; border-top: 0; }
+.boot-card i:nth-child(4) { bottom: -1px; right: -1px; border-left: 0; border-top: 0; }
+.boot-heart { width: 58px; height: 58px; margin: 0 auto 12px; filter: drop-shadow(0 0 14px var(--pink)); animation: beat 1.6s ease-in-out infinite; }
+@keyframes beat { 0%, 100% { transform: scale(1); } 14% { transform: scale(1.14); } 28% { transform: scale(1); } 42% { transform: scale(1.1); } }
+.boot-card h1 {
+  font-family: var(--script); font-size: clamp(36px, 9vw, 48px); font-weight: 700; line-height: 1.1; margin-bottom: 6px;
+  background: linear-gradient(45deg, #ff4081, #ffb3d1, #ff2c55); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 14px rgba(255, 44, 85, .35));
+}
+.boot-line { height: 2px; margin: 14px 0 16px; background: linear-gradient(90deg, transparent, var(--pink), #a855f7, transparent); opacity: .85; }
+.boot-card p { color: #f3bcd6; font-size: 14.5px; line-height: 1.55; opacity: .88; margin-bottom: 8px; }
+.boot-card p.note { font-size: 11.5px; opacity: .55; margin-bottom: 22px; }
+#start-btn {
+  width: 100%; padding: 15px 10px; cursor: pointer; font-weight: 700; font-size: 15px; letter-spacing: .14em; color: #fff;
+  background: linear-gradient(135deg, rgba(255, 43, 85, .55), rgba(209, 18, 63, .55)); border: 1px solid var(--pink); border-radius: 50px;
+  box-shadow: 0 0 26px rgba(255, 43, 85, .5); transition: transform .25s, box-shadow .25s; outline: none;
+}
+#start-btn:hover, #start-btn:focus-visible { transform: scale(1.04); box-shadow: 0 0 40px rgba(255, 43, 85, .8); }
+#start-btn:active { transform: scale(.98); }
+#start-btn { animation: btnGlow 2.4s ease-in-out infinite; }
+@keyframes btnGlow { 50% { box-shadow: 0 0 44px rgba(255, 43, 85, .85); } }
+#mute-btn { position: fixed; top: max(16px, env(safe-area-inset-top)); right: 16px; z-index: 66; opacity: 0; pointer-events: none; }
+#mute-btn.show { opacity: .9; pointer-events: auto; }
+.lb-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 46px; height: 46px; border-radius: 50%; font-size: 26px; line-height: 1; }
+#lb-prev { left: 12px; } #lb-next { right: 12px; }
+
+/* ================= Холсты ================= */
+#heart-canvas, #fireworks-canvas { position: fixed; inset: 0; width: 100%; height: 100%; display: none; }
+#heart-canvas { z-index: 2; touch-action: none; cursor: grab; }
+#heart-canvas:active { cursor: grabbing; }
+#fireworks-canvas { z-index: 20; pointer-events: none; }
+#webgl-container { position: fixed; inset: 0; z-index: 10; }
+#webgl-container canvas { display: block; }
+#fade { position: fixed; inset: 0; background: #000; opacity: 0; pointer-events: none; z-index: 90; transition: opacity 1.2s ease; }
+
+/* ================= Подпись и подсказка ================= */
+#caption { position: fixed; left: 0; right: 0; bottom: max(8vh, 58px); text-align: center; z-index: 3; opacity: 0; transition: opacity 2s ease; pointer-events: none; }
+#caption.show { opacity: 1; }
+#caption small { display: block; font-size: 11px; letter-spacing: .34em; color: #b8a3b1; margin-bottom: 4px; font-weight: 500; }
+#caption span { font-family: var(--script); font-size: 30px; color: #fff; }
+#caption span b { font-weight: 700; color: #ff4f9a; text-shadow: 0 0 12px rgba(255, 45, 120, .6); }
+#hint { position: fixed; left: 0; right: 0; bottom: 14px; text-align: center; z-index: 3; font-size: 10px; letter-spacing: .2em; color: #b58aa3; opacity: 0; transition: opacity 1.5s ease; pointer-events: none; }
+#hint.show { opacity: .85; }
+
+#fw-message {
+  position: fixed; left: 0; right: 0; top: 24%; text-align: center; z-index: 21; pointer-events: none; padding: 0 20px;
+  font-family: var(--script); font-weight: 700; font-size: clamp(28px, 7vw, 46px); color: #ffb3dd;
+  text-shadow: 0 0 18px #ff2ea6, 0 0 40px rgba(255, 46, 166, .6); opacity: 0; transform: translateY(10px) scale(.96); transition: opacity 1.4s ease, transform 1.4s ease;
+}
+#fw-message.show { opacity: 1; transform: none; }
+
+/* ================= Кнопки ================= */
+.glass-btn {
+  cursor: pointer; color: #fff; background: rgba(255, 255, 255, .09); border: 1px solid rgba(255, 120, 190, .35);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); outline: none; touch-action: manipulation;
+  transition: background .25s, box-shadow .25s, opacity 1.6s ease;
+}
+.glass-btn:hover, .glass-btn:focus-visible { background: rgba(255, 45, 120, .28); box-shadow: 0 0 18px rgba(255, 45, 120, .45); }
+.round-btn { width: 42px; height: 42px; border-radius: 50%; font-size: 19px; line-height: 1; flex: 0 0 auto; }
+.pill-btn { padding: 12px 26px; border-radius: 30px; font-size: 13px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; flex: 0 0 auto; }
+
+#heart-bar { position: fixed; right: max(18px, env(safe-area-inset-right)); bottom: max(18px, env(safe-area-inset-bottom)); z-index: 65; display: none; gap: 10px; align-items: center; pointer-events: none; }
+#heart-bar.show { pointer-events: auto; }
+#heart-bar button { pointer-events: auto; position: relative; z-index: 1; }
+#heart-bar.show { display: flex; }
+#heart-bar .pill-btn { border-color: var(--pink); box-shadow: 0 0 20px rgba(255, 45, 120, .4); }
+
+#bottom-bar { position: fixed; bottom: max(26px, env(safe-area-inset-bottom)); left: 0; width: 100%; z-index: 60; display: flex; justify-content: center; align-items: center; gap: 12px; pointer-events: none; }
+#bottom-bar .glass-btn { opacity: 0; pointer-events: none; }
+#bottom-bar.live .glass-btn { opacity: 1; pointer-events: auto; }
+
+/* ================= Заголовок галактики ================= */
+#overlay-text { position: fixed; top: max(22px, env(safe-area-inset-top)); left: 0; width: 100%; text-align: center; pointer-events: none; z-index: 50; opacity: 0; transition: opacity 3s ease; padding: 0 16px; }
+#overlay-text h2 { font-family: var(--script); font-weight: 700; font-size: clamp(26px, 6vw, 42px); color: #ffb3f0; text-shadow: 0 0 14px rgba(255, 102, 221, .85), 0 0 34px rgba(255, 45, 120, .5); }
+#overlay-text p { margin-top: 2px; font-size: clamp(10px, 2.4vw, 12px); letter-spacing: .16em; text-transform: uppercase; color: rgba(255, 255, 255, .55); }
+#counter { margin-top: 10px; font-size: clamp(12px, 3vw, 14px); color: #ffd3e8; text-shadow: 0 0 10px rgba(255, 45, 120, .7); letter-spacing: .04em; }
+#counter b { font-size: 1.35em; color: #fff; }
+#counter span { font-family: var(--mono); opacity: .8; margin-left: 6px; }
+#counter { display: inline-block; padding: 7px 18px; border-radius: 30px; background: rgba(255, 255, 255, .06); border: 1px solid rgba(255, 120, 190, .28); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); font-variant-numeric: tabular-nums; }
+#counter:empty { display: none; }
+#webgl-container::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse at 50% 50%, transparent 50%, rgba(2, 0, 6, .7) 100%); }
+
+/* ================= Письмо ================= */
+#letterWrap { position: fixed; inset: 0; z-index: 70; display: flex; align-items: center; justify-content: center; padding: 20px; background: rgba(7, 2, 15, .5); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); opacity: 0; pointer-events: none; transition: opacity .8s ease; }
+#letterWrap.open { opacity: 1; pointer-events: auto; }
+.letter { width: min(440px, 100%); max-height: 82vh; display: flex; flex-direction: column; background: rgba(32, 8, 40, .93); border: 1px solid rgba(255, 45, 120, .4); border-radius: 12px; box-shadow: 0 0 60px rgba(255, 45, 120, .25); transform: translateY(14px) scale(.97); transition: transform .8s ease; }
+#letterWrap.open .letter { transform: none; }
+.letter-head { display: flex; align-items: center; padding: 12px 16px; border-bottom: 1px solid rgba(255, 45, 120, .2); }
+.letter-head b { flex: 1; font-family: var(--mono); font-size: 11px; letter-spacing: .25em; color: var(--pink); }
+.icon-btn { background: none; border: 0; color: #d9b9cb; font-size: 18px; cursor: pointer; padding: 2px 8px; border-radius: 4px; }
+.icon-btn:hover, .icon-btn:focus-visible { color: #fff; background: rgba(255, 255, 255, .08); outline: none; }
+.letter-body { padding: 18px 18px 8px; overflow-y: auto; min-height: 150px; user-select: text; -webkit-user-select: text; }
+#letterText { white-space: pre-wrap; font-family: "Caveat", var(--sans); font-size: 24px; line-height: 1.45; cursor: pointer; }
+#letterText.typing::after { content: "▍"; color: var(--pink); animation: blink .8s steps(1) infinite; margin-left: 1px; }
+@keyframes blink { 50% { opacity: 0; } }
+.letter-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 16px 14px; }
+.letter-foot em { font-family: var(--mono); font-size: 11px; color: #b58aa3; font-style: normal; }
+
+/* ================= Просмотр фото / видео ================= */
+#lightbox { position: fixed; inset: 0; z-index: 80; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; background: rgba(5, 0, 10, .88); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); opacity: 0; pointer-events: none; transition: opacity .5s ease; }
+#lightbox.open { opacity: 1; pointer-events: auto; }
+#lb-stage img, #lb-stage video { display: block; max-width: 88vw; max-height: 78vh; border-radius: 10px; transform: scale(.94); transition: transform .5s ease; }
+#lb-stage img { border: 12px solid #fff4f8; border-bottom-width: 44px; box-shadow: 0 0 60px rgba(255, 45, 120, .45); }
+#lb-stage video { box-shadow: 0 0 60px rgba(255, 45, 120, .45); background: #000; }
+#lightbox.open #lb-stage img, #lightbox.open #lb-stage video { transform: none; }
+#lb-cap { margin-top: 14px; font-family: var(--script); font-size: 24px; color: #ffd3e8; text-shadow: 0 0 12px rgba(255, 45, 120, .6); min-height: 30px; }
+#lb-close { position: absolute; top: max(16px, env(safe-area-inset-top)); right: 16px; width: 44px; height: 44px; font-size: 18px; border-radius: 50%; }
+</style>
+</head>
+<body>
+
+<!-- ===== Приветствие ===== -->
+<div id="welcome-screen">
+  <div class="boot-card">
+    <i></i><i></i><i></i><i></i>
+    <svg class="boot-heart" viewBox="0 0 32 32" aria-hidden="true">
+      <defs><linearGradient id="hg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff7ab0"/><stop offset="1" stop-color="#ff2d78"/></linearGradient></defs>
+      <path d="M16 28 C4 19 2 11 7 7.5 C11 5 14.5 7 16 10 C17.5 7 21 5 25 7.5 C30 11 28 19 16 28Z" fill="url(#hg)"/>
+    </svg>
+    <h1>Для тебя</h1>
+    <div class="boot-line"></div>
+    <p>Приготовься увидеть чудо. Надень наушники и начни это романтическое путешествие.</p>
+    <p class="note">(Желательно включи версию для ПК, если смотришь с телефона)</p>
+    <button id="start-btn" type="button">❤ START ❤</button>
+  </div>
+</div>
+
+<canvas id="heart-canvas"></canvas>
+<canvas id="fireworks-canvas"></canvas>
+<div id="webgl-container"></div>
+
+<div id="caption"><small id="cap-top"></small><span id="cap-script"></span></div>
+<div id="hint">ПОТЯНИ, ЧТОБЫ ПОВЕРНУТЬ ↔</div>
+<div id="fw-message">Лови моменты счастья... ✨</div>
+
+<!-- Заголовок поверх галактики -->
+<div id="overlay-text">
+  <h2>💖 Твои глаза красивее чем космос 💖</h2>
+  <p>Вращай, масштабируй и нажми на фото, чтобы вспомнить момент</p>
+  <div id="counter"></div>
+</div>
+
+<!-- Кнопки на этапе сердца -->
+<div id="heart-bar">
+  <button class="glass-btn round-btn" id="reopen" type="button" aria-label="Открыть письмо">✉</button>
+  <button class="glass-btn pill-btn" id="nextPill" type="button">Дальше ✦</button>
+</div>
+
+<!-- Кнопки в галактике -->
+<div id="bottom-bar">
+  <button class="glass-btn round-btn" id="letter-btn" type="button" aria-label="Письмо">✉</button>
+  <button class="glass-btn round-btn" id="zoom-out-btn" type="button" aria-label="Отдалить">−</button>
+  <button class="glass-btn pill-btn" id="restart-btn" type="button" onclick="location.reload()">Начать заново ❤️</button>
+  <button class="glass-btn round-btn" id="zoom-in-btn" type="button" aria-label="Приблизить">+</button>
+</div>
+
+<!-- Письмо -->
+<div id="letterWrap">
+  <div class="letter" role="dialog" aria-label="Письмо">
+    <div class="letter-head">
+      <b>PARA TI</b>
+      <button class="icon-btn" id="closeBtn" type="button" aria-label="Закрыть">✕</button>
+    </div>
+    <div class="letter-body">
+      <div id="letterText"></div>
+    </div>
+    <div class="letter-foot">
+      <button class="glass-btn pill-btn" id="nextBtn" type="button">Дальше ✦</button>
+      <em>— made with love</em>
+    </div>
+  </div>
+</div>
+
+<!-- Просмотр воспоминания -->
+<div id="lightbox">
+  <button class="glass-btn" id="lb-close" type="button" aria-label="Закрыть">✕</button>
+  <button class="glass-btn lb-nav" id="lb-prev" type="button" aria-label="Назад">‹</button>
+  <button class="glass-btn lb-nav" id="lb-next" type="button" aria-label="Вперёд">›</button>
+  <div id="lb-stage"></div>
+  <div id="lb-cap"></div>
+</div>
+
+<button class="glass-btn round-btn" id="mute-btn" type="button" aria-label="Звук вкл/выкл">🔊</button>
+<div id="fade"></div>
+
+<audio id="heart-audio" src="music.mp3" loop preload="auto"></audio>
+<audio id="galaxy-audio" loop src="song.mp3" preload="auto"></audio>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+<script>
+/* =====================================================================
+   ⚙️  НАСТРОЙКИ  —  всё, что можно менять, находится здесь
+   ===================================================================== */
+
+// Имя и слово в центре 3D-сердца (в галактике)
+const NAME = "Lovestia";
+const CENTER_TEXT = "Lovestia";
+
+// ✉ ТВОЁ ПИСЬМО. Меняй текст только здесь, в коде.
+const LETTER = `For you🤍
+
+Каждое слово в этом сердце — про тебя.
+
+(Здесь будет ваше письмо.❤️)
+
+— Твой ...🤫`;
+
+// Через сколько секунд после старта появится письмо
+const LETTER_AT = 13;
+
+// Подпись под сердцем (вторая строка: слово, выделенное розовым, пишется в <b>…</b>)
+const CAPTION_TOP = "PROGRAMÉ ESTE LATIDO";
+const CAPTION_SCRIPT = "para <b>ti</b> 💗";
+
+// Слова, которые падают и собираются в сердце (имя добавляется автоматически)
+const WORDS = [
+  "I love you", "I love you", "Love you", "Je t'aime", "Forever", "Always",
+  "Sweetheart", "Love", "You", "Me & you", NAME, CENTER_TEXT
+];
+
+// Счётчик «мы вместе» в галактике. Укажи дату начала, например "2024-02-14"
+// или "2024-02-14T18:30:00". Пустая строка "" = счётчик скрыт.
+const START_DATE = "2026-10-25T01:01:01";
+const COUNTER_LABEL = "Мы вместе уже";
+
+// Подписи к фото в окне просмотра (необязательно): номер файла → текст
+// Например: { "1.jpg": "Наша первая встреча", "5.mp4": "Тот самый день" }
+const CAPTIONS = {
+  "1.jpg": "Твоя улыбка — моё любимое чудо ❤️",
+  "2.jpg": "Ты прекрасна даже тогда, когда этого не замечаешь.",
+  "3.jpg": "В тебе есть что-то, что невозможно описать словами.",
+  "4.jpg": "Если бы красота была светом, ты бы осветила целый мир.",
+  "5.jpg": "Мне нравится каждая маленькая деталь в тебе.",
+  "6.jpg": "Твои глаза — место, в котором хочется задержаться.",
+  "7.jpg": "Ты делаешь обычные моменты особенными.",
+  "8.jpg": "Самая милая причина моей улыбки — ты.",
+  "9.jpg": "Ты прекрасна не только внешне, но и душой.",
+  "10.jpg": "С тобой даже тишина становится уютной.",
+  "11.jpg": "У тебя удивительный талант — делать мой день лучше.",
+  "12.jpg": "Ты словно самый красивый момент любимой песни.",
+  "13.jpg": "Надеюсь, ты чаще смотришь на себя моими глазами.",
+  "14.jpg": "Твоя нежность дороже тысячи красивых слов.",
+  "15.jpg": "Ты — маленькое чудо в огромном мире.",
+  "16.jpg": "Мне повезло знать такую девушку, как ты.",
+  "17.jpg": "Твоя улыбка заслуживает отдельного места во вселенной.",
+  "18.jpg": "В тебе столько тепла, что рядом становится светлее.",
+  "19.jpg": "Ты не должна быть идеальной, чтобы быть особенной.",
+  "20.jpg": "Каждая твоя фотография — ещё один повод улыбнуться.",
+  "21.jpg": "Ты красива по-своему, и именно это бесценно.",
+  "22.jpg": "Хочу, чтобы ты всегда помнила, какая ты замечательная.",
+  "23.jpg": "Даже звёзды немного завидуют твоему сиянию.",
+  "24.jpg": "Твой смех — один из моих любимых звуков.",
+  "25.jpg": "Ты умеешь быть прекрасной, просто оставаясь собой.",
+  "26.jpg": "Пусть у тебя будет столько счастья, сколько ты даришь другим.",
+  "27.jpg": "В этом мире много красивого, но ты для меня особенная.",
+  "28.jpg": "Ты — та самая нежность, которую хочется беречь.",
+  "29.jpg": "Никогда не сомневайся в своей красоте и ценности.",
+  "30.jpg": "Если день был бы картиной, ты была бы его самой яркой краской.",
+  "31.jpg": "И всё же ни одна подпись не расскажет, насколько ты особенная. Люблю тебя ❤️",
+};
+
+// Фотографии и видео (лежат рядом с index.html)
+const PHOTOS = [
+  "1.jpg", "2.jpg", "3.jpg", "4.jpg", "5.jpg", "6.jpg", "7.jpg", "8.jpg", "9.jpg", "10.jpg", "11.jpg", "12.jpg", "13.jpg", "14.jpg", "15.jpg", "16.jpg", "17.jpg", "18.jpg", "19.jpg", "20.jpg", "21.jpg", "22.jpg", "23.jpg", "24.jpg", "25.jpg", "26.jpg", "27.jpg", "28.jpg", "29.jpg", "30.jpg", "31.jpg"
+];
+const VIDEOS = ["1.mp4", "2.mp4", "3.mp4", "4.mp4", "5.mp4", "6.mp4", "7.mp4", "8.mp4", "9.mp4", "10.mp4"];
+
+// Настройки сердца из слов
+const THICK = 9;        // толщина сердца: больше = круглее
+const N_WORDS = 88;     // сколько слов
+const N_RING = 30;      // из них по контуру
+const N_HEARTS = 8;     // маленькие красные сердечки ♥
+const FOCUS = 5;        // какая глубина в фокусе, остальное размыто
+
+const ALL_MEDIA = [
+  ...PHOTOS.map((file) => ({ type: "photo", url: file })),
+  ...VIDEOS.map((file) => ({ type: "video", url: file }))
+];
+const STICKER_ICONS = ["💖","💕","💘","💝","💗","💓","💞","💜","🌹","🌸","🌺","🌷","🦋","✨","🌟","⭐","🎀","🍓","🍒","🥰","😍","😘","🐻","🐰","🌈"];
+
+/* ===================================================================== */
+const $ = (id) => document.getElementById(id);
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const lerp = (a, b, t) => a + (b - a) * t;
+const easeOut = (t) => 1 - Math.pow(1 - t, 3);
+const easeInOut = (t) => (t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+const heartX = (t) => 16 * Math.pow(Math.sin(t), 3);
+const heartY = (t) => 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
+
+const heartAudio = $("heart-audio");
+const galaxyAudio = $("galaxy-audio");
+let muted = false;
+$("mute-btn").addEventListener("click", () => {
+  muted = !muted; heartAudio.muted = muted; galaxyAudio.muted = muted;
+  $("mute-btn").textContent = muted ? "🔇" : "🔊";
+});
+
+$("cap-top").textContent = CAPTION_TOP;
+$("cap-script").innerHTML = CAPTION_SCRIPT;
+
+
+/* ---------------------------------------------------------------------
+   Старт
+   --------------------------------------------------------------------- */
+$("start-btn").onclick = function () {
+  $("welcome-screen").style.opacity = "0";
+  $("mute-btn").classList.add("show");
+  try { document.fonts.load("600 14px Manrope"); document.fonts.load("bold 100px Montserrat"); document.fonts.load("bold 24px Caveat"); } catch (e) {}
+
+  heartAudio.volume = 1;
+  heartAudio.play().catch(() => {});
+  // «Разблокируем» вторую песню прямо по нажатию (нужно для iPhone/Safari)
+  galaxyAudio.muted = true;
+  galaxyAudio.play().then(() => { galaxyAudio.pause(); galaxyAudio.currentTime = 0; galaxyAudio.muted = muted; }).catch(() => { galaxyAudio.muted = muted; });
+
+  setTimeout(() => { $("welcome-screen").style.display = "none"; startLatido(); }, 900);
+};
+
+/* =====================================================================
+   ЧАСТЬ 1. Слова падают и собираются в вращающееся сердце
+   ===================================================================== */
+const canvas = $("heart-canvas");
+const ctx = canvas.getContext("2d");
+let W = 0, H = 0;
+function resizeHeart() {
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  W = window.innerWidth; H = window.innerHeight;
+  canvas.width = W * dpr; canvas.height = H * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+window.addEventListener("resize", () => { if (canvas.style.display === "block") resizeHeart(); });
+
+const items = [];
+for (let i = 0; i < N_WORDS + N_HEARTS; i++) {
+  const glyph = i >= N_WORDS;
+  const ring = !glyph && i < N_RING;
+  const t = ring ? (i / N_RING) * Math.PI * 2 + (Math.random() - .5) * .18 : Math.random() * Math.PI * 2;
+  const k = ring ? .97 + Math.random() * .05 : Math.min(.98, Math.sqrt(Math.random()));
+  const side = Math.random() < .5 ? 1 : -1;
+  const hz = ring ? (Math.random() - .5) * 3 : side * THICK * Math.sqrt(Math.max(0, 1 - k * k)) * (.65 + Math.random() * .35);
+  items.push({
+    text: glyph ? "♥" : WORDS[Math.floor(Math.random() * WORDS.length)],
+    glyph,
+    hx: heartX(t) * k, hy: heartY(t) * k, hz,
+    sx: Math.random(), sy: .06 + Math.random() * .9, sz: -45 + Math.random() * 75,
+    delay: Math.random() * 2.6, fall: 1.6 + Math.random() * 1.6,
+    asmDelay: Math.random() * 1.0, phase: Math.random() * 6.28,
+    m: glyph ? 1 + Math.random() * .6 : .75 + Math.random() * .6,
+    x1: 0, y1: 0, a1: 0, b1: 0, s1: 0, ae: 0, px: 0, py: 0, z: 0, pr: 1, vis: false
+  });
+}
+const order = items.slice();
+const dust = [];
+for (let i = 0; i < 35; i++) dust.push({ x: Math.random(), y: Math.random(), ph: Math.random() * 6.28, sp: .4 + Math.random() * 1.2 });
+
+let running = false, t0 = 0, last = 0;
+let yaw = 0, pitch = .1, yawVel = 0;
+let dragging = false, lastX = 0, lastY = 0;
+let captionShown = false, letterShown = false, hintShown = false;
+let exploding = false, exT0 = 0;
+
+canvas.addEventListener("pointerdown", (e) => {
+  if (!running || exploding) return;
+  dragging = true; lastX = e.clientX; lastY = e.clientY;
+  try { canvas.setPointerCapture(e.pointerId); } catch (err) {}
+  $("hint").classList.remove("show");
+});
+canvas.addEventListener("pointermove", (e) => {
+  if (!dragging) return;
+  const dx = e.clientX - lastX, dy = e.clientY - lastY;
+  lastX = e.clientX; lastY = e.clientY;
+  yaw += dx * .012;
+  pitch = clamp(pitch + dy * .01, -1.1, 1.1);
+  yawVel = lerp(yawVel, clamp(dx * .012 * 50, -8, 8), .5);
+});
+const endDrag = () => { dragging = false; };
+canvas.addEventListener("pointerup", endDrag);
+canvas.addEventListener("pointercancel", endDrag);
+
+function drawWord(text, x, y, size, r, g, b, alpha, blur, k, glyph) {
+  ctx.font = `${glyph ? 700 : 600} ${size.toFixed(1)}px Manrope, system-ui, sans-serif`;
+  if (blur > .8) {
+    const OFF = 30000;
+    ctx.shadowColor = `rgba(${r},${g},${b},${clamp(alpha * 1.6, 0, 1).toFixed(3)})`;
+    ctx.shadowBlur = blur * 2.2 * k;
+    ctx.shadowOffsetX = OFF;
+    ctx.fillStyle = "#000";
+    ctx.fillText(text, x - OFF / k, y);
+    ctx.shadowOffsetX = 0;
+  } else {
+    ctx.shadowColor = `rgba(255,30,120,${(alpha * .85).toFixed(3)})`;
+    ctx.shadowBlur = 8 * k;
+    ctx.fillStyle = `rgba(${r},${g},${b},${alpha.toFixed(3)})`;
+    ctx.fillText(text, x, y);
+  }
+}
+
+function startLatido() {
+  canvas.style.display = "block";
+  resizeHeart();
+  running = true;
+  t0 = last = performance.now();
+  requestAnimationFrame(frame);
+}
+
+function frame(now) {
+  if (!running) return;
+  const time = (now - t0) / 1000;
+  const dt = Math.min((now - last) / 1000, .05);
+  last = now;
+  const k = canvas.width / W;
+  ctx.clearRect(0, 0, W, H);
+
+  const et = exploding ? (now - exT0) / 1000 : 0;
+  const et2 = Math.max(0, et - .45);
+
+  const scale = Math.min(H * .68 / 31, W * .92 / 37);
+  const baseFont = clamp(scale * .85, 9, 21);
+  const F = 75;
+  const cx = W / 2, cy = H * .47;
+
+  const rotRamp = clamp((time - 5.6) / 2, 0, 1);
+  if (!dragging) {
+    yawVel += (.6 * rotRamp - yawVel) * (1 - Math.exp(-dt * 1.5));
+    yaw += (yawVel + (exploding ? et * 3 : 0)) * dt;
+    pitch += (.1 - pitch) * (1 - Math.exp(-dt * 1.2));
+  }
+  const cosY = Math.cos(yaw), sinY = Math.sin(yaw);
+  const cosP = Math.cos(pitch), sinP = Math.sin(pitch);
+
+  const ready = clamp((time - 4.2) / 2.2, 0, 1);
+  const bt = (time % 1.15) / 1.15;
+  const beat = Math.exp(-Math.pow((bt - .1) * 9, 2)) + .7 * Math.exp(-Math.pow((bt - .32) * 9, 2));
+  const pulse = exploding ? 1 - .13 * easeOut(clamp(et / .45, 0, 1)) : 1 + .06 * beat * ready;
+
+  ctx.shadowBlur = 0;
+  if (ready > 0) {
+    const ga = (.30 + .10 * beat) * ready * (exploding ? clamp(1 - et2, 0, 1) : 1);
+    const gl = ctx.createRadialGradient(cx, cy, 0, cx, cy, scale * 26);
+    gl.addColorStop(0, `rgba(130,12,75,${ga.toFixed(3)})`);
+    gl.addColorStop(1, "rgba(130,12,75,0)");
+    ctx.fillStyle = gl;
+    ctx.fillRect(0, 0, W, H);
+  }
+  for (const st of dust) {
+    const a = .08 + .2 * (.5 + .5 * Math.sin(time * st.sp + st.ph));
+    ctx.fillStyle = `rgba(255,210,235,${a.toFixed(3)})`;
+    ctx.fillRect(st.x * W, st.y * H, 1.3, 1.3);
+  }
+
+  for (const w of items) {
+    const fp = clamp((time - w.delay) / w.fall, 0, 1);
+    w.vis = fp > 0;
+    if (!w.vis) continue;
+    const pr0 = F / (F - w.sz);
+    w.x1 = w.sx * W + Math.sin(time * .9 + w.phase) * 8 * pr0;
+    w.y1 = -40 + (w.sy * H + 40) * easeOut(fp) + Math.sin(time * 1.1 + w.phase) * 4;
+    w.s1 = baseFont * .8 * w.m * pr0;
+    w.b1 = Math.abs(w.sz - FOCUS) / 9;
+    w.a1 = Math.min(1, fp * 3) * clamp(.75 - Math.abs(w.sz - FOCUS) / 70, .22, .75);
+    w.ae = easeInOut(clamp((time - 3.4 - w.asmDelay) / 2.0, 0, 1));
+
+    const X = w.hx * pulse, Y = (w.hy + 2.5) * pulse, Z = w.hz * pulse;
+    const xr = X * cosY + Z * sinY;
+    const z1 = -X * sinY + Z * cosY;
+    const yr = Y * cosP - z1 * sinP;
+    const zr = Y * sinP + z1 * cosP;
+    const pr = F / (F - zr);
+    w.px = cx + xr * scale * pr;
+    w.py = cy - yr * scale * pr;
+    w.z = zr; w.pr = pr;
+  }
+  order.sort((a, c) => (a.ae > .5 ? a.z : a.sz) - (c.ae > .5 ? c.z : c.sz));
+
+  /* вспышка в момент взрыва */
+  if (exploding && et2 > 0) {
+    const fa = Math.exp(-et2 * 3.2) * .85;
+    const fl = ctx.createRadialGradient(cx, cy, 0, cx, cy, scale * 34);
+    fl.addColorStop(0, `rgba(255,170,215,${fa.toFixed(3)})`);
+    fl.addColorStop(1, "rgba(255,45,120,0)");
+    ctx.fillStyle = fl;
+    ctx.fillRect(0, 0, W, H);
+  }
+
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+
+  for (const w of order) {
+    if (!w.vis) continue;
+    const front = clamp(w.z / 13, -1, 1) * .5 + .5;
+    const a2 = .22 + .78 * front;
+    const b2 = Math.max(0, Math.abs(w.z - FOCUS) - 6) * .42;
+    let x = lerp(w.x1, w.px, w.ae), y = lerp(w.y1, w.py, w.ae);
+    let a = lerp(w.a1, a2, w.ae);
+    let bl = lerp(w.b1, b2, w.ae);
+    let size = lerp(w.s1, baseFont * w.m * w.pr, w.ae);
+
+    if (exploding && et2 > 0) {
+      const e = et2 * et2;
+      x += (x - cx) * e * 2.6;
+      y += (y - cy) * e * 2.6;
+      size *= 1 + e * 2.4;
+      a *= clamp(1 - et2 / 1.4, 0, 1);
+      bl += et2 * 4;
+    }
+    if (a < .01) continue;
+
+    let r = lerp(150, 255, front) | 0, g = lerp(18, 58, front) | 0, bb = lerp(95, 150, front) | 0;
+    if (w.glyph) { r = 255; g = lerp(25, 50, front) | 0; bb = lerp(60, 95, front) | 0; }
+    drawWord(w.text, x, y, size, r, g, bb, a, bl, k, w.glyph);
+  }
+
+  if (!captionShown && time > 5.6) { $("caption").classList.add("show"); captionShown = true; }
+  if (!hintShown && time > 7.5) {
+    hintShown = true;
+    $("hint").classList.add("show");
+    setTimeout(() => $("hint").classList.remove("show"), 7000);
+  }
+  if (!letterShown && time > LETTER_AT) {
+    letterShown = true;
+    openLetter(true, "heart");
+    $("heart-bar").classList.add("show");
+  }
+
+  if (exploding && et > 2.1) {
+    running = false;
+    canvas.style.display = "none";
+    return;
+  }
+  requestAnimationFrame(frame);
+}
+
+/* =====================================================================
+   Письмо
+   ===================================================================== */
+let typer = null, typed = false, letterMode = "heart";
+
+function showNextInLetter() {
+  $("nextBtn").style.display = (letterMode === "heart" && typed && !exploding) ? "inline-block" : "none";
+}
+function typeLetter() {
+  clearInterval(typer);
+  typed = false; showNextInLetter();
+  const el = $("letterText");
+  const chars = Array.from(LETTER);
+  let i = 0;
+  el.textContent = "";
+  el.classList.add("typing");
+  typer = setInterval(() => {
+    i++;
+    el.textContent = chars.slice(0, i).join("");
+    if (i >= chars.length) {
+      clearInterval(typer);
+      el.classList.remove("typing");
+      typed = true; showNextInLetter();
+    }
+  }, 45);
+}
+function openLetter(replay, mode) {
+  letterMode = mode || letterMode;
+  $("letterWrap").classList.add("open");
+  if (replay) typeLetter(); else showNextInLetter();
+}
+function closeLetter() {
+  $("letterWrap").classList.remove("open");
+}
+function finishTyping() {
+  if (typed) return;
+  clearInterval(typer);
+  const el = $("letterText");
+  el.textContent = LETTER; el.classList.remove("typing");
+  typed = true; showNextInLetter();
+}
+$("letterText").addEventListener("click", finishTyping);
+$("closeBtn").addEventListener("click", closeLetter);
+$("reopen").addEventListener("click", () => openLetter(true, "heart"));
+$("letter-btn").addEventListener("click", () => openLetter(true, "galaxy"));
+$("nextBtn").addEventListener("click", goNext);
+$("nextPill").addEventListener("click", goNext);
+
+/* =====================================================================
+   Переход: сердце взрывается словами → салют → галактика
+   ===================================================================== */
+function goNext() {
+  if (exploding || !running) return;
+  closeLetter();
+  $("heart-bar").classList.remove("show");
+  $("caption").classList.remove("show");
+  $("hint").classList.remove("show");
+  exploding = true;
+  exT0 = performance.now();
+  setTimeout(startFireworks, 1100);
+}
+
+/* =====================================================================
+   ЧАСТЬ 2. Салют, часть залпов — в форме сердец
+   ===================================================================== */
+function startFireworks() {
+  const c = $("fireworks-canvas");
+  c.style.display = "block";
+  const fctx = c.getContext("2d");
+  let FW = 0, FH = 0;
+  function resize() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    FW = window.innerWidth; FH = window.innerHeight;
+    c.width = FW * dpr; c.height = FH * dpr;
+    fctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  resize();
+  window.addEventListener("resize", resize);
+  $("fw-message").classList.add("show");
+
+  const sm = clamp(Math.min(FW, FH) / 800, .55, 1.2);
+  const colors = ["#ff2ea6", "#ff5ccf", "#ff2b55", "#e0a6ff", "#ffe66d", "#ff4fc3", "#00f0ff", "#ff7300"];
+  const heartColors = ["#ff2b75", "#ff6aa8", "#ffb3d1", "#ff4f9a"];
+  const rockets = [], parts = [];
+  let n = 0, spawnAcc = 0, tt = 0, lastT = performance.now(), finale = false, ending = false, alive = true;
+
+  function spawnRocket(heart) {
+    const sx = Math.random() * FW, sy = FH;
+    const tx = Math.random() * FW * .7 + FW * .15;
+    const ty = Math.random() * FH * .35 + FH * .15;
+    const ang = Math.atan2(ty - sy, tx - sx), sp = (Math.random() * 4 + 11) * (FH / 800 + .4) / 1.4;
+    const pal = heart ? heartColors : colors;
+    rockets.push({ x: sx, y: sy, vx: Math.cos(ang) * sp, vy: Math.sin(ang) * sp, ty, heart, color: pal[Math.floor(Math.random() * pal.length)] });
+  }
+  function burst(x, y, color, heart, big) {
+    if (heart) {
+      const cnt = big ? 80 : 50;
+      const layers = big ? [1, .8, .6, .4] : [1, .7];
+      layers.forEach((L, li) => {
+        for (let i = 0; i < cnt; i++) {
+          const a = (i / cnt) * Math.PI * 2;
+          const s = (big ? .3 : .16) * sm * L;
+          parts.push({ x, y, vx: heartX(a) * s, vy: -heartY(a) * s, a: 1, d: .007 + Math.random() * .004, color: big ? heartColors[li % 4] : color, size: big ? 2.6 : 1.9, g: .008, fr: .985 });
+        }
+      });
+    } else {
+      for (let i = 0; i < 80; i++) {
+        const a = Math.random() * Math.PI * 2, s = (Math.random() * 6 + 1.5) * sm;
+        parts.push({ x, y, vx: Math.cos(a) * s, vy: Math.sin(a) * s, a: 1, d: Math.random() * .02 + .015, color, size: Math.random() * 2 + 1, g: .06, fr: .98 });
+      }
+    }
+  }
+
+  function loop(now) {
+    if (!alive) return;
+    const dt = Math.min((now - lastT) / 1000, .05); lastT = now; tt += dt;
+    const k = dt * 60;
+
+    fctx.globalCompositeOperation = "destination-out";
+    fctx.fillStyle = "rgba(0,0,0,.2)";
+    fctx.fillRect(0, 0, FW, FH);
+    fctx.globalCompositeOperation = "lighter";
+
+    if (tt < 3.4) { spawnAcc += dt; if (spawnAcc > .26) { spawnAcc = 0; spawnRocket(n++ % 3 === 2); } }
+    if (!finale && tt > 3.6) { finale = true; burst(FW / 2, FH * .36, "#ff2b75", true, true); }
+
+    for (let i = rockets.length - 1; i >= 0; i--) {
+      const r = rockets[i];
+      r.x += r.vx * k; r.y += r.vy * k;
+      if (r.y <= r.ty) { burst(r.x, r.y, r.color, r.heart, false); rockets.splice(i, 1); continue; }
+      fctx.fillStyle = "rgba(255,255,255,.35)";
+      fctx.fillRect(r.x, r.y, 2, 2);
+      fctx.beginPath(); fctx.fillStyle = r.color; fctx.arc(r.x, r.y, 2.6, 0, Math.PI * 2); fctx.fill();
+    }
+    for (let i = parts.length - 1; i >= 0; i--) {
+      const p = parts[i];
+      const fr = Math.pow(p.fr, k);
+      p.x += p.vx * k; p.y += p.vy * k;
+      p.vy += p.g * k; p.vx *= fr; p.vy *= fr;
+      p.a -= p.d * k;
+      if (p.a <= 0) { parts.splice(i, 1); continue; }
+      fctx.globalAlpha = p.a;
+      fctx.fillStyle = p.color;
+      fctx.beginPath(); fctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); fctx.fill();
+    }
+    fctx.globalAlpha = 1;
+
+    if (tt > 6.2 && !ending) {
+      ending = true;
+      $("fw-message").classList.remove("show");
+      toGalaxy(() => { alive = false; c.style.display = "none"; window.removeEventListener("resize", resize); });
+    }
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+}
+
+/* Затемнение → галактика (первая песня плавно затихает, вторая начинается) */
+function toGalaxy(cleanup) {
+  const fade = $("fade");
+  fade.style.transitionDuration = "1.2s";
+  fade.style.opacity = "1";
+  let vol = heartAudio.volume;
+  const fadeMusic = setInterval(() => {
+    vol -= .05;
+    if (vol <= 0) { vol = 0; heartAudio.pause(); heartAudio.currentTime = 0; clearInterval(fadeMusic); }
+    heartAudio.volume = vol;
+  }, 100);
+  setTimeout(() => {
+    cleanup();
+    start3DGalaxy();
+    fade.style.transitionDuration = "2.8s";
+    fade.style.opacity = "0";
+  }, 1400);
+}
+
+/* =====================================================================
+   Просмотр воспоминания (фото / видео)
+   ===================================================================== */
+let lightboxOpen = false, lbGetList = () => [], lbIndex = 0;
+function openLightbox(media) {
+  const stage = $("lb-stage");
+  stage.innerHTML = "";
+  galaxyAudio.volume = 1;
+  lbIndex = lbGetList().indexOf(media);
+  if (media.type === "video") {
+    const v = document.createElement("video");
+    v.src = media.url; v.controls = true; v.autoplay = true; v.loop = true; v.playsInline = true;
+    stage.appendChild(v);
+    galaxyAudio.volume = .15;      // музыка тише, чтобы слышать видео
+    v.play().catch(() => {});
+  } else {
+    const img = new Image();
+    img.src = media.failed ? media.fallbackUrl : media.url;
+    img.alt = "";
+    stage.appendChild(img);
+  }
+  $("lb-cap").textContent = CAPTIONS[media.url] || "";
+  $("lightbox").classList.add("open");
+  lightboxOpen = true;
+}
+function closeLightbox() {
+  if (!lightboxOpen) return;
+  $("lightbox").classList.remove("open");
+  lightboxOpen = false;
+  const v = $("lb-stage").querySelector("video");
+  if (v) { v.pause(); v.removeAttribute("src"); v.load(); }
+  galaxyAudio.volume = 1;
+  setTimeout(() => { if (!lightboxOpen) $("lb-stage").innerHTML = ""; }, 500);
+}
+function lbStep(d) {
+  const l = lbGetList();
+  if (lightboxOpen && l.length > 1) openLightbox(l[(lbIndex + d + l.length) % l.length]);
+}
+$("lb-prev").addEventListener("click", () => lbStep(-1));
+$("lb-next").addEventListener("click", () => lbStep(1));
+let swipeX = null;
+$("lightbox").addEventListener("touchstart", (e) => { swipeX = e.touches[0].clientX; }, { passive: true });
+$("lightbox").addEventListener("touchend", (e) => {
+  if (swipeX === null) return;
+  const dx = e.changedTouches[0].clientX - swipeX; swipeX = null;
+  if (Math.abs(dx) > 60) lbStep(dx < 0 ? 1 : -1);
+}, { passive: true });
+$("lb-close").addEventListener("click", closeLightbox);
+$("lightbox").addEventListener("click", (e) => { if (e.target === $("lightbox")) closeLightbox(); });
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") { closeLightbox(); closeLetter(); }
+  if (e.key === "ArrowRight") lbStep(1);
+  if (e.key === "ArrowLeft") lbStep(-1);
+});
+
+/* =====================================================================
+   Счётчик «мы вместе»
+   ===================================================================== */
+function plural(n, a, b, c) {
+  const m = Math.abs(n) % 100, m1 = m % 10;
+  if (m > 10 && m < 20) return c;
+  if (m1 > 1 && m1 < 5) return b;
+  if (m1 === 1) return a;
+  return c;
+}
+function startCounter() {
+  if (!START_DATE) return;
+  const d = new Date(START_DATE);
+  if (isNaN(d.getTime())) return;
+  const pad = (v) => String(v).padStart(2, "0");
+  const tick = () => {
+    const diff = Math.max(0, Date.now() - d.getTime());
+    const days = Math.floor(diff / 864e5);
+    const h = Math.floor((diff % 864e5) / 36e5), m = Math.floor((diff % 36e5) / 6e4), s = Math.floor((diff % 6e4) / 1e3);
+    $("counter").innerHTML = `${COUNTER_LABEL} <b>${days}</b> ${plural(days, "день", "дня", "дней")}<span>${pad(h)}:${pad(m)}:${pad(s)}</span>`;
+  };
+  tick();
+  setInterval(tick, 1000);
+}
+
+/* =====================================================================
+   ЧАСТЬ 3. 3D-галактика воспоминаний (Three.js)
+   ===================================================================== */
+function start3DGalaxy() {
+  galaxyAudio.currentTime = 0;
+  galaxyAudio.volume = 1;
+  galaxyAudio.play().catch(() => {});
+
+  $("overlay-text").style.opacity = "1";
+  $("bottom-bar").classList.add("live");
+  startCounter();
+
+  const mobile = window.innerWidth < 700;
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 5000);
+  let curCameraZ = mobile ? 2500 : 1900;
+  camera.position.z = curCameraZ;
+
+  const renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  $("webgl-container").appendChild(renderer.domElement);
+
+  const galaxy = new THREE.Group();
+  galaxy.rotation.x = 0.3;           // лёгкий наклон: видно спираль и объём
+  scene.add(galaxy);
+
+  /* ---------- мягкие светящиеся точки (шейдер): круглые, разного размера, мерцают ---------- */
+  const U = { uTime: { value: 0 }, uScale: { value: 1 }, uGS: { value: 1 } };
+  const updateScale = () => { U.uScale.value = renderer.getPixelRatio() * window.innerHeight / (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2))); };
+  updateScale();
+  const POINT_VS = `
+    attribute float aSize; attribute float aPhase; attribute vec3 aColor;
+    uniform float uTime, uScale, uTw, uGS; varying vec3 vColor; varying float vTw;
+    void main() {
+      vColor = aColor;
+      vTw = 1.0 - uTw * (0.5 - 0.5 * sin(uTime * (0.7 + aPhase) + aPhase * 60.0));
+      vec4 mv = modelViewMatrix * vec4(position, 1.0);
+      gl_PointSize = clamp(aSize * vTw * uGS * uScale / max(-mv.z, 1.0), 1.0, 72.0);
+      gl_Position = projectionMatrix * mv;
+    }`;
+  const POINT_FS = `
+    uniform sampler2D uMap; uniform float uOpacity; varying vec3 vColor; varying float vTw;
+    void main() { vec4 t = texture2D(uMap, gl_PointCoord); gl_FragColor = vec4(vColor * t.rgb, t.a * uOpacity); }`;
+  function glowPoints(tex, pos, col, size, phase, opacity, twinkle) {
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+    geo.setAttribute("aColor", new THREE.BufferAttribute(col, 3));
+    geo.setAttribute("aSize", new THREE.BufferAttribute(size, 1));
+    geo.setAttribute("aPhase", new THREE.BufferAttribute(phase, 1));
+    const mat = new THREE.ShaderMaterial({
+      uniforms: { uTime: U.uTime, uScale: U.uScale, uGS: U.uGS, uMap: { value: tex }, uOpacity: { value: opacity }, uTw: { value: twinkle } },
+      vertexShader: POINT_VS, fragmentShader: POINT_FS, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending
+    });
+    const pts = new THREE.Points(geo, mat);
+    pts.frustumCulled = false;
+    return pts;
+  }
+  const gauss = () => Math.sqrt(-2 * Math.log(1 - Math.random())) * Math.cos(Math.PI * 2 * Math.random());
+  const mkCanvas = (w, h) => { const cv = document.createElement("canvas"); cv.width = w; cv.height = h; return [cv, cv.getContext("2d")]; };
+  function heartPath(g, cx, cy, sc) {
+    g.beginPath();
+    for (let t = 0; t <= Math.PI * 2 + .05; t += .05) { const x = cx + heartX(t) * sc, y = cy - (heartY(t) + 2.5) * sc; t ? g.lineTo(x, y) : g.moveTo(x, y); }
+    g.closePath();
+  }
+
+  /* ---------- текстуры ---------- */
+  const glowTex = (() => {
+    const [cv, g] = mkCanvas(128, 128);
+    const gr = g.createRadialGradient(64, 64, 0, 64, 64, 64);
+    gr.addColorStop(0, "rgba(255,255,255,1)"); gr.addColorStop(.3, "rgba(255,255,255,.45)"); gr.addColorStop(1, "rgba(255,255,255,0)");
+    g.fillStyle = gr; g.fillRect(0, 0, 128, 128);
+    return new THREE.CanvasTexture(cv);
+  })();
+  const heartSpriteTex = (() => {
+    const [cv, g] = mkCanvas(128, 128);
+    const gr = g.createLinearGradient(0, 18, 0, 110);
+    gr.addColorStop(0, "#ffd0e6"); gr.addColorStop(1, "#ff2d78");
+    g.fillStyle = gr; g.shadowColor = "#ff2d78"; g.shadowBlur = 14;
+    heartPath(g, 64, 64, 3.2); g.fill(); g.fill();
+    return new THREE.CanvasTexture(cv);
+  })();
+  const sparkleTex = (() => {
+    const [cv, g] = mkCanvas(128, 128);
+    g.shadowColor = "#ffb3dd"; g.shadowBlur = 10; g.fillStyle = "#fff";
+    g.beginPath();
+    [[64, 8], [71, 57], [120, 64], [71, 71], [64, 120], [57, 71], [8, 64], [57, 57]].forEach(([x, y], i) => (i ? g.lineTo(x, y) : g.moveTo(x, y)));
+    g.closePath(); g.fill();
+    const gr = g.createRadialGradient(64, 64, 0, 64, 64, 26);
+    gr.addColorStop(0, "rgba(255,255,255,.9)"); gr.addColorStop(1, "rgba(255,255,255,0)");
+    g.fillStyle = gr; g.fillRect(0, 0, 128, 128);
+    return new THREE.CanvasTexture(cv);
+  })();
+
+  /* ---------- спиральная галактика из звёзд ---------- */
+  {
+    const R = 1900, ARMS = 3, TWIST = 3.2, n = mobile ? 26000 : 56000;
+    const pal = ["#ffe6f3", "#ff5fae", "#b04dff", "#5b8cff"].map((c) => new THREE.Color(c));
+    const pos = new Float32Array(n * 3), col = new Float32Array(n * 3), size = new Float32Array(n), ph = new Float32Array(n), c = new THREE.Color();
+    for (let i = 0; i < n; i++) {
+      let x, y, z, u;
+      if (Math.random() < .2) {                       // яркое ядро
+        const s = R * .085; x = gauss() * s; y = gauss() * s * .6; z = gauss() * s; u = Math.min(1, Math.hypot(x, z) / R * 1.6);
+      } else {                                        // рукава
+        u = Math.pow(Math.random(), 1.25);
+        const r = (.04 + u * .96) * R + gauss() * R * .025;
+        const a = Math.floor(Math.random() * ARMS) * (Math.PI * 2 / ARMS) + u * TWIST + gauss() * (.16 + .22 * u);
+        x = Math.cos(a) * r; z = Math.sin(a) * r; y = gauss() * (10 + (1 - u) * 60);
+      }
+      const p = Math.min(u, .999) * 3, k = Math.floor(p);
+      c.copy(pal[k]).lerp(pal[k + 1], p - k);
+      const hot = Math.random() < .07, br = hot ? 1 : .5 + Math.random() * .5;
+      if (hot) c.set("#ffffff");
+      pos.set([x, y, z], i * 3); col.set([c.r * br, c.g * br, c.b * br], i * 3);
+      size[i] = 2.4 + Math.pow(Math.random(), 5) * (hot ? 12 : 8); ph[i] = Math.random();
+    }
+    galaxy.add(glowPoints(glowTex, pos, col, size, ph, 1, .5));
+  }
+
+  /* ---------- объёмное сердце из светящихся частиц в центре ---------- */
+  const heartGroup = new THREE.Group();
+  {
+    const nVol = mobile ? 1800 : 3200, nRing = 420, n = nVol + nRing;
+    const pos = new Float32Array(n * 3), col = new Float32Array(n * 3), size = new Float32Array(n), ph = new Float32Array(n);
+    const top = new THREE.Color("#ff9ccc"), bot = new THREE.Color("#ff2d78"), c = new THREE.Color();
+    for (let i = 0; i < n; i++) {
+      const ring = i >= nVol, t = Math.random() * Math.PI * 2, k = ring ? 1 : Math.sqrt(Math.random()) * .98;
+      const x = heartX(t) * k * 8, y = heartY(t) * k * 8;
+      const z = ring ? gauss() * 6 : (Math.random() * 2 - 1) * 72 * Math.sqrt(Math.max(0, 1 - k * k));
+      c.copy(bot).lerp(top, clamp((y + 130) / 240, 0, 1));
+      const br = ring ? .9 : .3 + Math.random() * .25;
+      pos.set([x, y, z], i * 3); col.set([c.r * br, c.g * br, c.b * br], i * 3);
+      size[i] = ring ? 9 + Math.random() * 7 : 8 + Math.random() * 7; ph[i] = Math.random();
+    }
+    heartGroup.add(glowPoints(glowTex, pos, col, size, ph, .8, .35));
+  }
+  galaxy.add(heartGroup);
+
+  /* ---------- светящееся слово в сердце ---------- */
+  const txtCanvas = document.createElement("canvas");
+  txtCanvas.width = 1024; txtCanvas.height = 512;
+  const txtCtx = txtCanvas.getContext("2d");
+  const text = CENTER_TEXT || NAME;
+  txtCtx.fillStyle = "white";
+  txtCtx.textAlign = "center";
+  txtCtx.textBaseline = "middle";
+  let fontSize = 210;
+  txtCtx.font = `bold ${fontSize}px Montserrat, Arial`;
+  const tw = txtCtx.measureText(text).width;
+  if (tw > 850) { fontSize = Math.floor(fontSize * (850 / tw)); txtCtx.font = `bold ${fontSize}px Montserrat, Arial`; }
+  txtCtx.shadowColor = "#ff66dd";
+  txtCtx.shadowBlur = 40;
+  txtCtx.fillText(text, 512, 256);
+  const txtTex = new THREE.CanvasTexture(txtCanvas);
+  txtTex.colorSpace = THREE.SRGBColorSpace;
+  const txtSprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: txtTex, transparent: true, depthWrite: false }));
+  txtSprite.scale.set(250, 125, 1);
+  txtSprite.position.set(0, 10, 0);
+  heartGroup.add(txtSprite);
+
+  /* ---------- запасная карточка, если фото не найдено ---------- */
+  function createFallbackCard(index) {
+    const cv = document.createElement("canvas");
+    cv.width = 256; cv.height = 320;
+    const c2 = cv.getContext("2d");
+    c2.fillStyle = "#fffdf9"; c2.fillRect(0, 0, 256, 320);
+    const grad = c2.createLinearGradient(20, 20, 236, 240);
+    grad.addColorStop(0, `hsl(${(index * 35) % 360}, 95%, 75%)`);
+    grad.addColorStop(1, `hsl(${(index * 35 + 145) % 360}, 90%, 85%)`);
+    c2.fillStyle = grad; c2.fillRect(20, 20, 216, 220);
+    c2.font = "84px sans-serif"; c2.textAlign = "center"; c2.textBaseline = "middle";
+    c2.fillText(STICKER_ICONS[index % STICKER_ICONS.length], 128, 130);
+    const tags = ["Love Story", "Only You", "Sweet moments", "With Love", "Smile! 😊", "Together", "Soulmate", "Angel", "My Heart", "Amour", "Be mine"];
+    c2.fillStyle = "#4b5563"; c2.font = 'bold 24px "Caveat", cursive';
+    c2.fillText(tags[index % tags.length], 128, 282);
+    const t = new THREE.CanvasTexture(cv);
+    t.colorSpace = THREE.SRGBColorSpace;
+    return t;
+  }
+
+  /* Кадрируем фото/видео под рамку 4:5, чтобы лица не растягивались */
+  const CARD_W = 80, CARD_H = 100, CARD_ASPECT = CARD_W / CARD_H;
+  function coverFit(tex, w, h) {
+    if (!w || !h) return;
+    const a = w / h;
+    tex.repeat.set(1, 1); tex.offset.set(0, 0);
+    if (a > CARD_ASPECT) { tex.repeat.x = CARD_ASPECT / a; tex.offset.x = (1 - tex.repeat.x) / 2; }
+    else { tex.repeat.y = a / CARD_ASPECT; tex.offset.y = (1 - tex.repeat.y) / 2; }
+  }
+
+  /* ---------- фото и видео на орбитах ---------- */
+  const loader = new THREE.TextureLoader();
+  const mediaMeshes = [];
+  lbGetList = () => mediaMeshes.filter((m) => m.userData.active).map((m) => m.userData.media);
+
+  const frameTex = (() => {
+    const [cv, g] = mkCanvas(256, 320);
+    const gr = g.createLinearGradient(0, 0, 0, 320);
+    gr.addColorStop(0, "#fff8fb"); gr.addColorStop(1, "#ffe0ee");
+    g.fillStyle = gr; g.strokeStyle = "rgba(255,45,120,.3)"; g.lineWidth = 3;
+    g.beginPath(); g.roundRect ? g.roundRect(3, 3, 250, 314, 16) : g.rect(3, 3, 250, 314); g.fill(); g.stroke();
+    g.fillStyle = "#ff5fae"; heartPath(g, 128, 301, .55); g.fill();
+    return new THREE.CanvasTexture(cv);
+  })();
+  const frameGeo = new THREE.PlaneGeometry(90, 116);
+
+  function buildMesh(material, idx, media) {
+    const mesh = new THREE.Mesh(new THREE.PlaneGeometry(CARD_W, CARD_H), material);
+    const frameMat = new THREE.MeshBasicMaterial({ map: frameTex, transparent: true, depthWrite: false });
+    const frame = new THREE.Mesh(frameGeo, frameMat);
+    frame.position.set(0, -5, -0.6);
+    mesh.add(frame);
+    const glow = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, color: 0xff3d8f, transparent: true, opacity: 0.4, blending: THREE.AdditiveBlending, depthWrite: false }));
+    glow.scale.set(170, 200, 1);
+    glow.position.z = -2;
+    mesh.add(glow);
+    mesh.userData = { active: true, radius: 500, ring: 0, index: 0, count: 1, baseY: 0, phase: 0, media, frameMat, glow };
+    galaxy.add(mesh);
+    mediaMeshes.push(mesh);
+    return mesh;
+  }
+
+  ALL_MEDIA.forEach((item, idx) => {
+    const media = { type: item.type, url: item.url, failed: false, fallbackUrl: "" };
+    if (item.type === "photo") {
+      const material = new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, transparent: true, opacity: 0 });
+      loader.load(
+        item.url,
+        (tex) => {
+          tex.colorSpace = THREE.SRGBColorSpace;
+          tex.anisotropy = 8; coverFit(tex, tex.image.width, tex.image.height);
+          material.map = tex; material.opacity = 1; material.needsUpdate = true;
+        },
+        undefined,
+        () => {
+          const fb = createFallbackCard(idx);
+          media.failed = true;
+          media.fallbackUrl = fb.image.toDataURL();
+          material.map = fb; material.opacity = 1; material.needsUpdate = true;
+        }
+      );
+      buildMesh(material, idx, media);
+    } else {
+      const video = document.createElement("video");
+      video.src = item.url;
+      video.loop = true; video.muted = true; video.playsInline = true;
+      video.setAttribute("webkit-playsinline", "true");
+      video.crossOrigin = "anonymous";
+      video.play().catch(() => {});
+      const videoTex = new THREE.VideoTexture(video);
+      videoTex.colorSpace = THREE.SRGBColorSpace;
+      const material = new THREE.MeshBasicMaterial({ map: videoTex, side: THREE.DoubleSide, transparent: true });
+      const mesh = buildMesh(material, idx, media);
+      mesh.visible = false;
+      mesh.userData.active = false;
+      video.addEventListener("loadeddata", () => {
+        coverFit(videoTex, video.videoWidth, video.videoHeight);
+        mesh.visible = true; mesh.userData.active = true; layoutMedia();
+      });
+      video.addEventListener("error", () => { mesh.visible = false; mesh.userData.active = false; layoutMedia(); });
+    }
+  });
+
+  function layoutMedia() {
+    const act = mediaMeshes.filter((m) => m.userData.active);
+    const N = act.length;
+    if (N === 0) return;
+    const baseRadius = mobile ? 700 : 500;
+    const radiusStep = mobile ? 90 : 70;
+    const levelGap = 140;
+    const perRing = 18;
+    const capacity = (r) => Math.floor((2 * Math.PI * r) / 120);
+    let R = Math.max(N >= 6 ? 2 : 1, Math.ceil(N / perRing));
+    const radiiFor = (n) => Array.from({ length: n }, (_, i) => baseRadius + i * radiusStep);
+    while (radiiFor(R).reduce((t, r) => t + capacity(r), 0) < N) R++;
+    const radii = radiiFor(R);
+    const sumR = radii.reduce((x, y) => x + y, 0);
+    const counts = radii.map((r) => Math.floor((N * r) / sumR));
+    let rest = N - counts.reduce((x, y) => x + y, 0);
+    for (let i = R - 1; rest > 0; i = (i - 1 + R) % R) { counts[i]++; rest--; }
+    let k = 0;
+    for (let i = 0; i < R; i++) {
+      for (let j = 0; j < counts[i]; j++) {
+        Object.assign(act[k++].userData, {
+          radius: radii[i], ring: i, index: j, count: counts[i],
+          baseY: (i - (R - 1) / 2) * levelGap,
+          phase: i % 2 ? Math.PI / counts[i] : 0
+        });
+      }
+    }
+  }
+  layoutMedia();
+
+  /* ---------- парящие сердечки и искры ---------- */
+  [[heartSpriteTex, 70, 15, 26, ["#ffffff", "#ffd0e6", "#e6c8ff"]], [sparkleTex, 110, 10, 20, ["#ffffff", "#ffd6ec", "#bcd7ff"]]].forEach(([tex, n, s0, s1, pal]) => {
+    const pos = new Float32Array(n * 3), col = new Float32Array(n * 3), size = new Float32Array(n), ph = new Float32Array(n), c = new THREE.Color();
+    for (let i = 0; i < n; i++) {
+      const r = 420 + Math.random() * 900, a = Math.random() * Math.PI * 2;
+      c.set(pal[i % pal.length]);
+      pos.set([Math.cos(a) * r, (Math.random() - .5) * 480, Math.sin(a) * r], i * 3); col.set([c.r, c.g, c.b], i * 3);
+      size[i] = s0 + Math.random() * (s1 - s0); ph[i] = Math.random();
+    }
+    galaxy.add(glowPoints(tex, pos, col, size, ph, .9, .6));
+  });
+
+  /* ---------- падающие звёзды ---------- */
+  const meteorTex = (() => {
+    const cv = document.createElement("canvas");
+    cv.width = 256; cv.height = 16;
+    const g = cv.getContext("2d");
+    const gr = g.createLinearGradient(0, 0, 256, 0);
+    gr.addColorStop(0, "rgba(255,120,200,0)");
+    gr.addColorStop(.7, "rgba(255,160,220,.55)");
+    gr.addColorStop(1, "rgba(255,255,255,1)");
+    g.fillStyle = gr;
+    g.beginPath(); g.moveTo(0, 8); g.lineTo(256, 2); g.lineTo(256, 14); g.closePath(); g.fill();
+    return new THREE.CanvasTexture(cv);
+  })();
+  const meteors = [];
+  let nextMeteor = 1.5;
+  function spawnMeteor() {
+    const halfH = Math.tan(Math.PI / 6) * camera.position.z, halfW = halfH * camera.aspect;
+    const dir = new THREE.Vector2(-1, -0.5).normalize();
+    const mat = new THREE.SpriteMaterial({ map: meteorTex, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, rotation: Math.atan2(dir.y, dir.x) });
+    const sp = new THREE.Sprite(mat);
+    sp.scale.set(halfW * .38, halfW * .02, 1);
+    sp.position.set(halfW * (Math.random() * 1.1), halfH * (.15 + Math.random() * .75), 0);
+    scene.add(sp);
+    meteors.push({ sp, dir, speed: halfW * 1.5, life: 0 });
+  }
+
+  /* ---------- управление ---------- */
+  const modalOpen = () => lightboxOpen || $("letterWrap").classList.contains("open");
+  let isDown = false, lastX = 0, lastY = 0, velX = 0, velY = 0, galaxyScale = 1, pinchDist = 0;
+
+  window.addEventListener("mousedown", (e) => { if (modalOpen()) return; isDown = true; lastX = e.clientX; lastY = e.clientY; });
+  window.addEventListener("mouseup", () => { isDown = false; });
+  window.addEventListener("mousemove", (e) => {
+    if (!isDown || modalOpen()) return;
+    galaxy.rotation.y += (e.clientX - lastX) * 0.005;
+    galaxy.rotation.x += (e.clientY - lastY) * 0.005;
+    velY = (e.clientX - lastX) * 0.00015;
+    velX = (e.clientY - lastY) * 0.00015;
+    lastX = e.clientX; lastY = e.clientY;
+  });
+  window.addEventListener("touchstart", (e) => {
+    if (modalOpen()) return;
+    if (e.touches.length === 1) { isDown = true; lastX = e.touches[0].clientX; lastY = e.touches[0].clientY; }
+    if (e.touches.length === 2) pinchDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+  }, { passive: true });
+  window.addEventListener("touchend", () => { isDown = false; }, { passive: true });
+  window.addEventListener("touchmove", (e) => {
+    if (modalOpen()) return;
+    if (e.touches.length === 1) {
+      galaxy.rotation.y += (e.touches[0].clientX - lastX) * 0.005;
+      galaxy.rotation.x += (e.touches[0].clientY - lastY) * 0.005;
+      velY = (e.touches[0].clientX - lastX) * 0.00015;
+      velX = (e.touches[0].clientY - lastY) * 0.00015;
+      lastX = e.touches[0].clientX; lastY = e.touches[0].clientY;
+    } else if (e.touches.length === 2 && pinchDist) {
+      const d = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+      galaxyScale = clamp(galaxyScale * (d / pinchDist), 0.4, 2.5);
+      galaxy.scale.setScalar(galaxyScale);
+      pinchDist = d;
+    }
+  }, { passive: true });
+
+  window.addEventListener("wheel", (e) => {
+    if (modalOpen()) return;
+    galaxyScale = clamp(galaxyScale + (e.deltaY > 0 ? -0.05 : 0.05), 0.4, 2.5);
+    galaxy.scale.setScalar(galaxyScale);
+  }, { passive: true });
+  function zoomBy(step) { galaxyScale = clamp(galaxyScale + step, 0.4, 2.5); galaxy.scale.setScalar(galaxyScale); }
+  $("zoom-in-btn").addEventListener("click", () => zoomBy(0.15));
+  $("zoom-out-btn").addEventListener("click", () => zoomBy(-0.15));
+
+  /* нажатие на фото/видео открывает его крупно */
+  const raycaster = new THREE.Raycaster();
+  const ndc = new THREE.Vector2();
+  let downX = 0, downY = 0, downT = 0;
+  renderer.domElement.addEventListener("pointerdown", (e) => { downX = e.clientX; downY = e.clientY; downT = performance.now(); });
+  renderer.domElement.addEventListener("pointerup", (e) => {
+    if (modalOpen()) return;
+    if (Math.hypot(e.clientX - downX, e.clientY - downY) > 8 || performance.now() - downT > 400) return;
+    ndc.set((e.clientX / window.innerWidth) * 2 - 1, -(e.clientY / window.innerHeight) * 2 + 1);
+    raycaster.setFromCamera(ndc, camera);
+    const hits = raycaster.intersectObjects(mediaMeshes.filter((m) => m.visible && m.userData.active), false);
+    if (hits.length) openLightbox(hits[0].object.userData.media);
+  });
+
+  renderer.domElement.addEventListener("pointermove", (e) => {
+    if (isDown || modalOpen() || e.pointerType === "touch") return;
+    ndc.set((e.clientX / window.innerWidth) * 2 - 1, -(e.clientY / window.innerHeight) * 2 + 1);
+    raycaster.setFromCamera(ndc, camera);
+    renderer.domElement.style.cursor = raycaster.intersectObjects(mediaMeshes.filter((m) => m.visible && m.userData.active), false).length ? "pointer" : "grab";
+  });
+
+  window.addEventListener("resize", () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    updateScale();
+  });
+
+  /* ---------- цикл анимации ---------- */
+  const targetCameraZ = mobile ? 1200 : 700;
+  let prev = performance.now(), clock = 0;
+  const tv = new THREE.Vector3();
+
+  function animate() {
+    requestAnimationFrame(animate);
+    const now = performance.now();
+    const dt = Math.min((now - prev) / 1000, .05); prev = now; clock += dt;
+
+    if (curCameraZ > targetCameraZ) { curCameraZ -= 12; camera.position.z = curCameraZ; }
+
+    U.uTime.value = clock;
+    U.uGS.value = galaxy.scale.x;      // частицы уменьшаются вместе с галактикой, сердце не «сгорает» при отдалении
+    heartGroup.rotation.y += 0.0004;
+    const bt = (clock % 1.15) / 1.15;              // двойной «удар сердца», как в первой части
+    heartGroup.scale.setScalar(1 + .07 * (Math.exp(-Math.pow((bt - .1) * 9, 2)) + .7 * Math.exp(-Math.pow((bt - .32) * 9, 2))));
+    txtSprite.material.opacity = 0.75 + Math.sin(Date.now() * 0.003) * 0.25;
+
+    mediaMeshes.forEach((p, i) => {
+      const d = p.userData;
+      const a = Date.now() * 0.00008 + (d.index / d.count) * Math.PI * 2 + d.phase;
+      p.position.x = Math.cos(a) * d.radius;
+      p.position.z = Math.sin(a) * d.radius;
+      p.position.y = d.baseY + Math.sin(Date.now() * 0.001 + i) * 18;
+      p.lookAt(camera.position);
+      p.rotateZ(Math.sin(Date.now() * 0.0008 + i) * 0.08);
+      p.getWorldPosition(tv);                      // дальние карточки темнее — появляется глубина
+      const f = clamp(1.12 - (tv.distanceTo(camera.position) - 450) / 1500, .3, 1);
+      p.material.color.setScalar(f); d.frameMat.color.setScalar(f); d.glow.material.opacity = .4 * f;
+    });
+
+    if (!isDown && !modalOpen()) galaxy.rotation.y += 0.0004;
+    galaxy.rotation.x += velX;
+    galaxy.rotation.y += velY;
+    velX *= 0.94; velY *= 0.94;
+
+    if (clock > nextMeteor && curCameraZ <= targetCameraZ + 200) { spawnMeteor(); nextMeteor = clock + 2.5 + Math.random() * 3.5; }
+    for (let i = meteors.length - 1; i >= 0; i--) {
+      const m = meteors[i];
+      m.life += dt;
+      m.sp.position.x += m.dir.x * m.speed * dt;
+      m.sp.position.y += m.dir.y * m.speed * dt;
+      m.sp.material.opacity = Math.sin(clamp(m.life / 1.2, 0, 1) * Math.PI);
+      if (m.life > 1.2) { scene.remove(m.sp); m.sp.material.dispose(); meteors.splice(i, 1); }
+    }
+
+    galaxy.rotation.x = clamp(galaxy.rotation.x, -1.3, 1.3);
+    renderer.render(scene, camera);
+  }
+  animate();
+}
+</script>
+</body>
+</html>
